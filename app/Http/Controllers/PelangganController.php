@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PelangganController extends Controller
 {
     public function index()
     {
-        return view('pelanggan.index');
+        $pelanggans = Pelanggan::latest()->paginate(10);
+        return view('pelanggan.index', compact('pelanggans'));
     }
 
     public function create()
@@ -18,48 +21,49 @@ class PelangganController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:pelanggans,email',
-            'alamat' => 'nullable|string',
-            'telepon' => 'nullable|string|max:20',
+        $request->validate([
+            'nama'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:pelanggans,email',
+            'password' => 'required|string|min:6',
         ]);
 
-        // Create a new Pelanggan record
-        \App\Models\Pelanggan::create($validatedData);
+        Pelanggan::create([
+            'nama'     => $request->nama,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-        return redirect()->route('pelanggan.index')->with('success', 'Pelanggan created successfully.');
+        return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil ditambahkan!');
     }
 
-    public function edit($id)
+    public function edit(Pelanggan $pelanggan)
     {
-        $pelanggan = \App\Models\Pelanggan::findOrFail($id);
         return view('pelanggan.edit', compact('pelanggan'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Pelanggan $pelanggan)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:pelanggans,email,' . $id,
-            'alamat' => 'nullable|string',
-            'telepon' => 'nullable|string|max:20',
+        $request->validate([
+            'nama'  => 'required|string|max:255',
+            'email' => 'required|email|unique:pelanggans,email,' . $pelanggan->id,
         ]);
 
-        // Find the Pelanggan record and update it
-        $pelanggan = \App\Models\Pelanggan::findOrFail($id);
-        $pelanggan->update($validatedData);
+        $data = ['nama' => $request->nama, 'email' => $request->email];
 
-        return redirect()->route('pelanggan.index')->with('success', 'Pelanggan updated successfully.');
+        // Jika password diisi, update password baru
+        if ($request->filled('password')) {
+            $request->validate(['password' => 'min:6']);
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $pelanggan->update($data);
+
+        return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(Pelanggan $pelanggan)
     {
-        $pelanggan = \App\Models\Pelanggan::findOrFail($id);
         $pelanggan->delete();
-
-        return redirect()->route('pelanggan.index')->with('success', 'Pelanggan deleted successfully.');
+        return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil dihapus!');
     }
 }

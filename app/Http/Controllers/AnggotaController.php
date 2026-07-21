@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AnggotaController extends Controller
 {
     public function index()
     {
-        return view('anggota.index');
+        $anggotas = Anggota::latest()->paginate(10);
+        return view('anggota.index', compact('anggotas'));
     }
 
     public function create()
@@ -18,48 +21,54 @@ class AnggotaController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:anggotas,email',
+        $request->validate([
+            'nama'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:anggotas,email',
             'password' => 'required|string|min:6',
-            'status' => 'required|in:active,inactive',
+            'role'     => 'required|in:Administrator,Staff,Customer',
         ]);
 
-        // Create a new Anggota record
-        \App\Models\Anggota::create($validatedData);
+        Anggota::create([
+            'nama'     => $request->nama,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => $request->role,
+        ]);
 
-        return redirect()->route('anggota.index')->with('success', 'Anggota created successfully.');
+        return redirect()->route('anggota.index')->with('success', 'Anggota berhasil ditambahkan!');
     }
 
-    public function edit($id)
+    public function edit(Anggota $anggota)
     {
-        $anggota = \App\Models\Anggota::findOrFail($id);
         return view('anggota.edit', compact('anggota'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Anggota $anggota)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:anggotas,email,' . $id,
-            'password' => 'nullable|string|min:6',
-            'status' => 'required|in:active,inactive',
+        $request->validate([
+            'nama'  => 'required|string|max:255',
+            'email' => 'required|email|unique:anggotas,email,' . $anggota->id,
+            'role'  => 'required|in:Administrator,Staff,Customer',
         ]);
 
-        // Find the Anggota record and update it
-        $anggota = \App\Models\Anggota::findOrFail($id);
-        $anggota->update($validatedData);
+        $data = [
+            'nama'  => $request->nama,
+            'email' => $request->email,
+            'role'  => $request->role,
+        ];
 
-        return redirect()->route('anggota.index')->with('success', 'Anggota updated successfully.');
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $anggota->update($data);
+
+        return redirect()->route('anggota.index')->with('success', 'Data anggota berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(Anggota $anggota)
     {
-        $anggota = \App\Models\Anggota::findOrFail($id);
         $anggota->delete();
-
-        return redirect()->route('anggota.index')->with('success', 'Anggota deleted successfully.');
+        return redirect()->route('anggota.index')->with('success', 'Anggota berhasil dihapus!');
     }
 }

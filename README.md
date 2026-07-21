@@ -1,58 +1,61 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📦 Sistem Informasi Rental (Laravel 13)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi Manajemen Rental berbasis web yang dibangun menggunakan **Laravel 13** dan **Bootstrap 5**. Aplikasi ini dirancang untuk mengelola seluruh operasional penyewaan barang/alat, mulai dari autentikasi berbasis role, manajemen data master, transaksi penyewaan dengan penyesuaian stok otomatis, hingga pelaporan pendapatan.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🎓 Identitas Pengembang & Tugas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Proyek ini dibuat dan dikembangkan untuk memenuhi tugas **Ulangan Akhir Semester (UAS)**:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Nama** : Muhamad Hilman
+- **NIM** : 250220266
+- **Program Studi** : Manajemen Informatika
+- **Mata Kuliah** : Pemrograman Web 2
+- **Dosen Pengampu** : Syifa Shintawati, S.Kom
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🚀 Fitur Utama
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. 🔐 Autentikasi & Multi-Role (RBAC)
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- **Login & Auth System**: Autentikasi pengguna menggunakan model custom (`Anggota`).
+- **Hak Akses Berbasis Role (`RoleMiddleware`)**:
+    - **Administrator & Staff**: Akses penuh ke seluruh sistem (Dashboard, Data Master, Transaksi, dan Laporan).
+    - **Customer / User**: Akses terbatas pada modul transaksi penyewaan.
 
-## Agentic Development
+### 2. 🗂️ Manajemen Data Master (CRUD)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- **Kategori Barang**: Pengelompokan jenis alat/barang rental.
+- **Barang / Alat**: Inventarisasi barang lengkap dengan harga sewa per hari dan pantauan stok real-time.
+- **Supplier**: Pengelolaan data pemasok barang.
+- **Pelanggan**: Pendataan pelanggan penyewa.
+- **Anggota / Pengguna**: Pengelolaan akun pengguna dan penetapan role.
 
-```bash
-composer require laravel/boost --dev
+### 3. 🔄 Transaksi Penyewaan & Stok Otomatis
 
-php artisan boost:install
-```
+- **Otomatisasi Stok Alat**:
+    - Mengubah status transaksi ke **Disewa** akan **memotong stok** barang secara otomatis.
+    - Mengubah status transaksi ke **Dikembalikan / Selesai** akan **mengembalikan stok** barang.
+- **Kalkulasi Biaya Otomatis**: Perhitungan otomatis estimasi total biaya sewa berbasis tarif barang dan durasi sewa (JavaScript).
+- **Filter & Pencarian**: Filter transaksi berdasarkan Kode Transaksi, Nama Pelanggan, atau Status Sewa.
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 4. 📊 Modul Pelaporan (Reporting)
 
-## Contributing
+- **Filter Rentang Tanggal**: Menampilkan rekapitulasi transaksi berdasarkan rentang tanggal tertentu.
+- **Kalkulasi Pendapatan**: Total akumulasi pendapatan sewa secara otomatis.
+- **Print Ready**: Tampilan khusus yang dioptimalkan untuk cetak laporan (`window.print()`).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🛠️ Tumpukan Teknologi (Tech Stack)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Framework Backend**: Laravel 13.x
+- **Bahasa Pemrograman**: PHP >= 8.2
+- **Database**: MySQL / MariaDB
+- **ORM**: Eloquent ORM
+- **Frontend / UI**: HTML5, CSS3, JavaScript (ES6), Bootstrap 5
+- **Architecture**: Model-View-Controller (MVC)
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---

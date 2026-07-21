@@ -2,64 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
 {
     public function index()
     {
-        return view('barang.index');
+        $barangs = Barang::with('kategori')->latest()->paginate(10);
+        return view('barang.index', compact('barangs'));
     }
 
     public function create()
     {
-        return view('barang.create');
+        $kategoris = Kategori::all();
+        return view('barang.create', compact('kategoris'));
     }
 
     public function store(Request $request)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
+        $request->validate([
             'nama_barang' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
-            'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
+            'harga'       => 'required|numeric|min:0',
+            'stok'        => 'required|integer|min:0',
+            'deskripsi'   => 'nullable|string',
         ]);
 
-        // Create a new Barang record
-        \App\Models\Barang::create($validatedData);
+        Barang::create($request->all());
 
-        return redirect()->route('barang.index')->with('success', 'Barang created successfully.');
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan!');
     }
 
-    public function edit($id)
+    public function edit(Barang $barang)
     {
-        $barang = \App\Models\Barang::findOrFail($id);
-        return view('barang.edit', compact('barang'));
+        $kategoris = Kategori::all();
+        return view('barang.edit', compact('barang', 'kategoris'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Barang $barang)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
+        $request->validate([
             'nama_barang' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
-            'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
+            'harga'       => 'required|numeric|min:0',
+            'stok'        => 'required|integer|min:0',
+            'deskripsi'   => 'nullable|string',
         ]);
 
-        // Find the Barang record and update it
-        $barang = \App\Models\Barang::findOrFail($id);
-        $barang->update($validatedData);
+        $barang->update($request->all());
 
-        return redirect()->route('barang.index')->with('success', 'Barang updated successfully.');
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(Barang $barang)
     {
-        $barang = \App\Models\Barang::findOrFail($id);
         $barang->delete();
-
-        return redirect()->route('barang.index')->with('success', 'Barang deleted successfully.');
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus!');
     }
 }

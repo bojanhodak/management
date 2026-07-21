@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Anggota')
+@section('title', 'Daftar Pelanggan')
 
 @section('content')
 <a href="{{ route('dashboard') }}" class="btn btn-secondary mb-3">← Kembali ke Dashboard</a>
 <div class="card shadow-sm">
-    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Daftar Anggota</h5>
-        <a href="{{ route('anggota.create') }}" class="btn btn-light btn-sm">+ Tambah Anggota</a>
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Daftar Pelanggan</h5>
+        <a href="{{ route('pelanggan.create') }}" class="btn btn-light btn-sm">+ Tambah Pelanggan</a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -17,20 +17,21 @@
                         <th>No</th>
                         <th>Nama</th>
                         <th>Email</th>
-                        <th>Telepon</th>
+                        <th>Tanggal Terdaftar</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($anggotas as $key => $anggota)
+                    @forelse ($pelanggans as $key => $pelanggan)
                         <tr>
-                            <td>{{ $anggotas->firstItem() + $key }}</td>
-                            <td class="fw-bold">{{ $anggota->nama }}</td>
-                            <td>{{ $anggota->email }}</td>
-                            <td>{{ $anggota->telepon ?? '-' }}</td>
+                            <td>{{ $pelanggans->firstItem() + $key }}</td>
+                            <td class="fw-bold">{{ $pelanggan->nama }}</td>
+                            <td>{{ $pelanggan->email }}</td>
+                            <td>{{ $pelanggan->created_at->format('d M Y') }}</td>
                             <td>
-                                <a href="{{ route('anggota.edit', $anggota->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                <form action="{{ route('anggota.destroy', $anggota->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus anggota ini?')">
+                                <a href="{{ route('pelanggan.edit', $pelanggan->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                
+                                <form action="{{ route('pelanggan.destroy', $pelanggan->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus pelanggan ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
@@ -39,14 +40,15 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted">Belum ada data anggota.</td>
+                            <td colspan="5" class="text-center text-muted">Belum ada data pelanggan.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+
         <div class="d-flex justify-content-end">
-            {{ $anggotas->links() }}
+            {{ $pelanggans->links() }}
         </div>
     </div>
 </div>

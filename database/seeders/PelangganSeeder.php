@@ -12,10 +12,10 @@ class PelangganSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Pelanggan::create([
-            'nama' => 'Dadang',
-            'email' => 'dadangkonelo@gmail.com',
-            'password' => bcrypt('12345678'),
-        ]);
+        // \App\Models\Pelanggan::create([
+        //     'nama' => 'Dadang',
+        //     'email' => 'dadangkonelo@gmail.com',
+        //     'password' => bcrypt('12345678'),
+        // ]);
     }
 }

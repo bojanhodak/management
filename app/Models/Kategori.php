@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kategori extends Model
 {
-    protected $table = 'kategoris';
+    protected $guarded = [];
 
-    protected $fillable = [
-        'nama_kategori',
-        'deskripsi',
-    ];
+    // Relasi ini yang menyelesaikan error BadMethodCallException sebelumnya
+    public function barangs()
+    {
+        return $this->hasMany(Barang::class, 'kategori_id');
+    }
 }

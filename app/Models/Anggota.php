@@ -2,16 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Anggota extends Model
+class Anggota extends Authenticatable
 {
+    use Notifiable;
+
     protected $table = 'anggotas';
 
-    protected $fillable = [
-        'nama',
-        'email',
+    protected $guarded = [];
+
+    protected $hidden = [
         'password',
-        'status',
     ];
+
+    // Relasi jika ada
+    public function penyewaans()
+    {
+        return $this->hasMany(Penyewaan::class, 'anggota_id');
+    }
 }

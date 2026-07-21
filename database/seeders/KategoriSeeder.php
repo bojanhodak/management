@@ -12,19 +12,19 @@ class KategoriSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Kategori::create([
-            'nama_kategori' => 'Elektronik',
-            'deskripsi' => 'Kategori untuk produk elektronik seperti TV, laptop, dan smartphone.',
-        ]);
+        // \App\Models\Kategori::create([
+        //     'nama_kategori' => 'Elektronik',
+        //     'deskripsi' => 'Kategori untuk produk elektronik seperti TV, laptop, dan smartphone.',
+        // ]);
 
-        \App\Models\Kategori::create([
-            'nama_kategori' => 'Pakaian',
-            'deskripsi' => 'Kategori untuk produk pakaian seperti baju, celana, dan jaket.',
-        ]);
+        // \App\Models\Kategori::create([
+        //     'nama_kategori' => 'Pakaian',
+        //     'deskripsi' => 'Kategori untuk produk pakaian seperti baju, celana, dan jaket.',
+        // ]);
 
-        \App\Models\Kategori::create([
-            'nama_kategori' => 'Makanan',
-            'deskripsi' => 'Kategori untuk produk makanan dan minuman.',
-        ]);
+        // \App\Models\Kategori::create([
+        //     'nama_kategori' => 'Makanan',
+        //     'deskripsi' => 'Kategori untuk produk makanan dan minuman.',
+        // ]);
     }
 }

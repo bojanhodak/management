@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
     public function index()
     {
-        return view('kategori.index');
+        $kategoris = Kategori::withCount('barangs')->latest()->paginate(10);
+        return view('kategori.index', compact('kategoris'));
     }
 
     public function create()
@@ -18,44 +20,36 @@ class KategoriController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'nama_kategori' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
+        $request->validate([
+            'nama_kategori' => 'required|string|max:255|unique:kategoris,nama_kategori',
+            'deskripsi'     => 'nullable|string',
         ]);
 
-        // Create a new Kategori record
-        \App\Models\Kategori::create($validatedData);
+        Kategori::create($request->all());
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori created successfully.');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
-    public function edit($id)
+    public function edit(Kategori $kategori)
     {
-        $kategori = \App\Models\Kategori::findOrFail($id);
         return view('kategori.edit', compact('kategori'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Kategori $kategori)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'nama_kategori' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
+        $request->validate([
+            'nama_kategori' => 'required|string|max:255|unique:kategoris,nama_kategori,' . $kategori->id,
+            'deskripsi'     => 'nullable|string',
         ]);
 
-        // Find the Kategori record and update it
-        $kategori = \App\Models\Kategori::findOrFail($id);
-        $kategori->update($validatedData);
+        $kategori->update($request->all());
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori updated successfully.');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(Kategori $kategori)
     {
-        $kategori = \App\Models\Kategori::findOrFail($id);
         $kategori->delete();
-
-        return redirect()->route('kategori.index')->with('success', 'Kategori deleted successfully.');
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }

@@ -6,11 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pelanggan extends Model
 {
-    protected $table = 'pelanggans';
+    protected $guarded = [];
 
-    protected $fillable = [
-        'nama',
-        'email',
-        'password',
-    ];
+    public function penyewaans()
+    {
+        return $this->hasMany(Penyewaan::class, 'pelanggan_id');
+    }
 }

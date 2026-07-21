@@ -12,17 +12,17 @@ class AnggotaSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Anggota::create([
-            'nama' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('12345678'),
-            'status' => 'aktif'
-        ]);
-        \App\Models\Anggota::create([
-            'nama' => 'Staff',
-            'email' => 'staff@example.com',
-            'password' => bcrypt('87654321'),
-            'status' => 'aktif'
-        ]);
+        // \App\Models\Anggota::create([
+        //     'nama' => 'Admin',
+        //     'email' => 'admin@example.com',
+        //     'password' => bcrypt(''),
+        //     'status' => 'aktif'
+        // ]);
+        // \App\Models\Anggota::create([
+        //     'nama' => 'Staff',
+        //     'email' => 'staff@example.com',
+        //     'password' => bcrypt('87654321'),
+        //     'status' => 'aktif'
+        // ]);
     }
 }
